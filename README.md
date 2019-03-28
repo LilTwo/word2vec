@@ -1,0 +1,1 @@
+Scala implementation of Skip-Gram word2vec model.
