@@ -7,10 +7,10 @@ import scala.io.Source
 object main extends App {
   val root = new java.io.File("./data")
   val files = root.list().take(300)
-  val sequences = files.flatMap(file => article2Sequences(Source.fromFile(s"unsup/$file").mkString))
+  val sequences = files.flatMap(file => article2Sequences(Source.fromFile(s"data/$file").mkString))
   val wordFreq = getWordFrequency(sequences.flatten[String])
   val rareWords = wordFreq.filter(_._2 <= 5).keys.toSet
-  rareWords.foreach(println)
+  wordFreq.toArray.sortBy(-_._2).take(50).foreach(println)
   val trainingSet = sequences.flatMap(sequence => SkipGram.prepareSequence(sequence.filterNot(rareWords.contains),1))
   val skipgram  = new SkipGram(16,trainingSet,0.5e-2)
 
